@@ -9,9 +9,6 @@ class Game
     @secret_word = @possible_words.shuffle.first
     puts @secret_word
   end
-end
-
-game = Game.new
 
 
 #Display a counter so the player knows how many more incorrect guesses they have before the game ends
@@ -19,9 +16,26 @@ game = Game.new
 #Display which correct letters have already been chosen (and their position in the word, e.g. _ r o g r a _ _ i n g) and which incorrect letters have already been chosen
 
 #Every turn, allow the player to make a guess of a letter (it should be case insensitive)
+  def play
+    guess
+  end
+
+  def guess
+    puts "Please guess a letter."
+    @guess = gets.chomp.downcase
+    until @guess.match(/[a-z]/) && @guess.length == 1
+      puts "You have not chosen 1 letter from the alphabet. Please try again."
+      @guess = gets.chomp.downcase
+    end
+  end
 
 #Update the display to reflect whether the letter was correct or incorrect
 #If out of guesses, the player should lose
+
+end
+
+game = Game.new
+game.play
 
 #AFTER DEVELOPING THE GAME
 
