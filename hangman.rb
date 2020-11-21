@@ -1,4 +1,18 @@
 #When a new game is started, load in the dictionary and randomly select a word between 5 and 12 characters long for the secret word
+class Game
+  def initialize
+    @possible_words = []
+    @dictionary = File.readlines('5desk.txt')
+    @dictionary.each do |word|
+      @possible_words << word if word.strip.length > 4 && word.strip.length < 13
+    end
+    @secret_word = @possible_words.shuffle.first
+    puts @secret_word
+  end
+end
+
+game = Game.new
+
 
 #Display a counter so the player knows how many more incorrect guesses they have before the game ends
 
