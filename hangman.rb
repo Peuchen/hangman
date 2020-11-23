@@ -13,11 +13,8 @@ class Game
       end
     end
     @secret_word = @possible_words.shuffle.first
-    puts @secret_word
 
     @placeholder = "-" * @secret_word.length
-
-    puts @possible_words
   end
 
   def play
@@ -30,11 +27,12 @@ class Game
         break
       end
     end
-    puts "You have won. Congratulations!"
+    puts "You have won. Congratulations!" if $win
   end
 #Display a counter so the player knows how many more incorrect guesses they have before the game ends
   def count(turn)
     puts "********************\nYou have got #{10-@strike} guesses left."
+    puts "Secret word: #{@placeholder} (#{@placeholder.length} letters)"
   end
 
 #Every turn, allow the player to make a guess of a letter (it should be case insensitive)
@@ -61,7 +59,6 @@ class Game
       @incorrect_guesses << guess
       @strike += 1
     end
-    puts @placeholder
     puts "Incorrect: #{@incorrect_guesses.sort.join(" ")}"
 
     $win = true unless @placeholder.include?("-")
