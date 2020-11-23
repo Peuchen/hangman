@@ -21,20 +21,20 @@ class Game
   end
 
   def play
-    turn = 0
+    @strike = 0
     until $win
-      count(turn)
+      count(@strike)
       feedback(guess)
-      turn += 1
-      if turn == 10
+      if @strike == 10
         puts "You have lost the game. The secret word was #{@secret_word}."
         break
       end
     end
+    puts "You have won. Congratulations!"
   end
 #Display a counter so the player knows how many more incorrect guesses they have before the game ends
   def count(turn)
-    puts "You have got #{10-turn} guesses left."
+    puts "********************\nYou have got #{10-@strike} guesses left."
   end
 
 #Every turn, allow the player to make a guess of a letter (it should be case insensitive)
@@ -59,9 +59,12 @@ class Game
       end
     else
       @incorrect_guesses << guess
+      @strike += 1
     end
     puts @placeholder
     puts "Incorrect: #{@incorrect_guesses.sort.join(" ")}"
+
+    $win = true unless @placeholder.include?("-")
   end
 
 #Update the display to reflect whether the letter was correct or incorrect
