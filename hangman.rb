@@ -4,6 +4,7 @@ class Game
     $win = false
 
     @possible_words = []
+    @incorrect_guesses = []
 
     @dictionary = File.readlines('5desk.txt')
     @dictionary.each do |word|
@@ -11,14 +12,15 @@ class Game
     end
     @secret_word = @possible_words.shuffle.first
     puts @secret_word
+
+    @placeholder = "-" * @secret_word.length
   end
 
   def play
     turn = 0
     until $win
       count(turn)
-      guess
-      #feedback
+      feedback(guess)
       turn += 1
       if turn == 10
         puts "You have lost the game. The secret word was #{@secret_word}."
@@ -40,9 +42,23 @@ class Game
       puts "You have not chosen 1 letter from the alphabet. Please try again."
       @guess = gets.chomp.downcase
     end
+    @guess
   end
 
 #Display which correct letters have already been chosen (and their position in the word, e.g. _ r o g r a _ _ i n g) and which incorrect letters have already been chosen
+
+  def feedback(guess)
+    if @secret_word.include?(guess)
+      puts "Your guess '#{guess}' is included in the secret word."
+      @secret_word.split("").each_with_index do |letter, idx|
+        @placeholder[idx] = letter if letter == guess
+      end
+    else
+      @incorrect_guesses << guess
+    end
+    puts @placeholder
+    puts "Incorrect: #{@incorrect_guesses.sort.join(" ")}"
+  end
 
 #Update the display to reflect whether the letter was correct or incorrect
 #If out of guesses, the player should lose
