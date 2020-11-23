@@ -7,13 +7,17 @@ class Game
     @incorrect_guesses = []
 
     @dictionary = File.readlines('5desk.txt')
-    @dictionary.each do |word|
-      @possible_words << word.strip if word.strip.length > 4 && word.strip.length < 13
+    @dictionary.each do |word| word.strip!
+      if word.length > 4 && word.length < 13 && word == word.downcase
+        @possible_words << word
+      end
     end
     @secret_word = @possible_words.shuffle.first
     puts @secret_word
 
     @placeholder = "-" * @secret_word.length
+
+    puts @possible_words
   end
 
   def play
