@@ -10,6 +10,18 @@ class Game
     @placeholder = "-" * @secret_word.length
   end
 
+  def choose_mode
+    puts "Do you want to play a new game (n) or start a saved game (s)?"
+    input = gets.chomp.downcase
+    until input == "n" || input == "s"
+      puts "Please try again."
+      input = gets.chomp.downcase
+    end
+    if input == "n"
+      play
+    end
+  end
+
   def create_word_list
     possible_words = []
 
@@ -82,7 +94,7 @@ class Game
 end
 
 game = Game.new
-game.play
+game.choose_mode
 
 #AFTER DEVELOPING THE GAME
 
