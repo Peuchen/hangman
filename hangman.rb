@@ -10,18 +10,6 @@ class Game
     @placeholder = "-" * @secret_word.length
   end
 
-  def choose_mode
-    puts "Do you want to play a new game (n) or start a saved game (s)?"
-    input = gets.chomp.downcase
-    until input == "n" || input == "s"
-      puts "Please try again."
-      input = gets.chomp.downcase
-    end
-    if input == "n"
-      play
-    end
-  end
-
   def create_word_list
     possible_words = []
 
@@ -32,6 +20,17 @@ class Game
       end
     end
     possible_words
+  end
+
+  def choose_mode
+    puts "Do you want to play a new game (n) or start a saved game (s)?"
+    input = gets.chomp.downcase
+    until input == "n" || input == "s"
+      puts "Please try again."
+      input = gets.chomp.downcase
+    end
+    load_from_yaml if input == "s"
+    play
   end
 
   def play
@@ -80,14 +79,27 @@ class Game
     if input == "save"
       current_time = Time.now
       File.open("savefile.yaml", "w") do |file|
-        file.puts YAML::dump(current_time)
-        file.puts YAML::dump(@incorrect_guesses)
-        file.puts YAML::dump(@strike)
-        file.puts YAML::dump(@secret_word)
-        file.puts YAML::dump(@placeholder)
+        hash = {current_time: current_time,
+                incorrect_guesses: @incorrect_guesses,
+                strike: @strike,
+                secret_word: @secret_word,
+                placeholder: @placeholder}
+        file.puts YAML::dump(hash)
       end
       puts "Your game has been saved at #{current_time}."
       exit
+    end
+  end
+
+  def load_from_yaml
+    File.open("savefile.yaml", "r") do |file|
+      data = YAML::load(file)
+      current_time = data[:current_time]
+      @incorrect_guesses = data[:incorrect_guesses]
+      @strike = data[:strike]
+      @secret_word = data[:secret_word]
+      @placeholder = data[:placeholder]
+      puts "This game was saved at #{current_time}."
     end
   end
 
@@ -95,9 +107,3 @@ end
 
 game = Game.new
 game.choose_mode
-
-#AFTER DEVELOPING THE GAME
-
-#Instead of making a guess, the player should also have the option to save the game
-
-#When the program first loads, allow the player to open one of their saved games, which jumps exactly back to the saved moment

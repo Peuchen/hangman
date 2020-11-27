@@ -1,14 +1,12 @@
---- 2020-11-27 14:20:14.603179414 +01:00
 ---
-- a
-- i
+:current_time: 2020-11-27 14:45:12.238259956 +01:00
+:incorrect_guesses:
 - s
-- m
+- a
+- n
 - p
-- x
-- w
-- o
-- y
---- 9
---- teller
---- te--er
+- t
+- n
+:strike: 6
+:secret_word: codifier
+:placeholder: "-o-i-ier"
