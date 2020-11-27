@@ -47,14 +47,13 @@ class Game
   end
 
   def guess
-    puts "Please guess a letter. To save your progress, please write down 'save'."
+    puts "Please guess a letter. To save your progress, please enter 'save'."
     input = gets.chomp.downcase
-    save_to_yaml(input)
-    until (input.match(/[a-z]/) && input.length == 1)
-      puts "You have not chosen 1 letter from the alphabet or saved your game by entering 'save'. Please try again."
+    until (input.match(/[a-z]/) && input.length == 1) || input == "save"
+      puts "Please guess 1 letter from the alphabet or enter 'save'."
       input = gets.chomp.downcase
-      save_to_yaml(input)
     end
+    save_to_yaml if input == "save"
     input
   end
 
@@ -75,20 +74,18 @@ class Game
     end
   end
 
-  def save_to_yaml(input)
-    if input == "save"
-      current_time = Time.now
-      File.open("savefile.yaml", "w") do |file|
-        hash = {current_time: current_time,
-                incorrect_guesses: @incorrect_guesses,
-                strike: @strike,
-                secret_word: @secret_word,
-                placeholder: @placeholder}
-        file.puts YAML::dump(hash)
-      end
-      puts "Your game has been saved at #{current_time}."
-      exit
+  def save_to_yaml
+    current_time = Time.now
+    File.open("savefile.yaml", "w") do |file|
+      hash = {current_time: current_time,
+              incorrect_guesses: @incorrect_guesses,
+              strike: @strike,
+              secret_word: @secret_word,
+              placeholder: @placeholder}
+      file.puts YAML::dump(hash)
     end
+    puts "Your game has been saved at #{current_time}."
+    exit
   end
 
   def load_from_yaml
